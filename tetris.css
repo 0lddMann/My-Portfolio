@@ -1,0 +1,30 @@
+:root{
+  --bg:#07070b;
+  --card: rgba(255,255,255,0.03);
+  --muted: rgba(255,255,255,0.8);
+  --accent: linear-gradient(90deg,#7b61ff,#2dd4bf);
+  --glass-border: rgba(255,255,255,0.06);
+  --ease: cubic-bezier(.2,.9,.3,1);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,Segoe UI,system-ui,-apple-system,Arial;background:var(--bg);color:#fff}
+.tetris-shell{max-width:1100px;margin:48px auto;padding:20px}
+header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+header .back{color:var(--muted);text-decoration:none}
+header h1{margin:0;font-size:1.4rem}
+.game-area{display:flex;gap:24px;align-items:flex-start}
+canvas{background:#000;border-radius:8px;display:block;box-shadow:0 12px 40px rgba(0,0,0,0.6)}
+.sidebar{width:260px;display:flex;flex-direction:column;gap:14px}
+.box{background:var(--card);border:1px solid var(--glass-border);padding:12px;border-radius:10px;backdrop-filter:blur(6px)}
+.label{font-size:.85rem;color:var(--muted);margin-bottom:8px}
+#score{font-weight:700;font-size:1.6rem}
+.controls ul{margin:0;padding-left:18px;color:var(--muted)}
+.cta-btn{margin-top:6px;padding:10px 12px;border-radius:8px;background:linear-gradient(90deg,#7b61ff,#2dd4bf);border:none;color:#000;font-weight:700;cursor:pointer}
+footer{margin-top:18px;color:var(--muted);font-size:.9rem}
+
+/* Responsive */
+@media (max-width:900px){
+  .game-area{flex-direction:column;align-items:center}
+  .sidebar{width:100%}
+  canvas#arena{width:90%;height:auto}
+}

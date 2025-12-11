@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tetris — By Ice Olpindo</title>
+  <link rel="stylesheet" href="tetris.css">
+</head>
+<body>
+  <div class="tetris-shell">
+    <header>
+      <a class="back" href="index.html">← Back</a>
+      <h1>Tetris</h1>
+    </header>
+
+    <main>
+      <div class="game-area">
+        <canvas id="arena" width="240" height="480"></canvas>
+        <div class="sidebar">
+          <div class="box">
+            <div class="label">Next</div>
+            <canvas id="next" width="120" height="120"></canvas>
+          </div>
+          <div class="box">
+            <div class="label">Score</div>
+            <div id="score">0</div>
+          </div>
+          <div class="box controls">
+            <div class="label">Controls</div>
+            <ul>
+              <li>← → : move</li>
+              <li>↓ : soft drop</li>
+              <li>↑ : rotate</li>
+              <li>Space : hard drop</li>
+              <li>P : pause</li>
+            </ul>
+          </div>
+          <button id="restart" class="cta-btn">Restart</button>
+        </div>
+      </div>
+    </main>
+    <footer>Built with HTML, CSS and JavaScript</footer>
+  </div>
+
+  <script src="tetris.js"></script>
+</body>
+</html>

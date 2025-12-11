@@ -360,3 +360,78 @@ footer {
     .site-header nav a { margin-left: .6rem; font-size: .95rem; }
     .portfolio-grid { gap: .9rem; }
 }
+
+/* Gallery styles */
+.gallery-page .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+.gallery-item {
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  transition: transform .28s ease, box-shadow .28s ease;
+}
+.gallery-item img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+  transform-origin: center;
+  transition: transform .36s ease;
+}
+.gallery-item:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+.gallery-item:hover img { transform: scale(1.04); }
+
+/* Lightbox */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,0.85);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+  z-index: 9999;
+  gap: 12px;
+}
+.lightbox.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.lightbox-img {
+  max-width: calc(100vw - 120px);
+  max-height: calc(100vh - 140px);
+  border-radius: 8px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+  display: block;
+}
+.lightbox-caption {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.95rem;
+  text-align: center;
+  max-width: 900px;
+}
+.lightbox-close, .lightbox-prev, .lightbox-next {
+  position: absolute;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+.lightbox-close { top: 20px; right: 20px; }
+.lightbox-prev { left: 20px; top: 50%; transform: translateY(-50%); font-size: 20px; }
+.lightbox-next { right: 20px; top: 50%; transform: translateY(-50%); font-size: 20px; }
+
+/* make sure gallery sits above video overlay */
+.gallery-page, .gallery-page .container { position: relative; z-index: 6; }

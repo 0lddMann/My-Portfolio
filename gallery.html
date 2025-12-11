@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Art Gallery — Ice</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="loaded">
+  <div class="site">
+    <header class="site-header">
+      <div class="container">
+        <div class="logo">Ice Olpindo</div>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="view-my-work.html">View My Work</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="portfolio reveal gallery-page" id="gallery">
+        <div class="container">
+          <h2 class="section-title">Art Gallery</h2>
+          <p class="muted">Selected works - click any image to view larger with captions.</p>
+
+          <div class="gallery-grid">
+            <!-- Add your images into assets/images/artist/ (art1.jpg..art8.jpg) -->
+            <button class="gallery-item" data-src="./assets/images/artist/art1.jpg" data-caption="Art 1 — Apple">
+              <img src="./assets/images/artist/art1.jpg" alt="Art 1">
+            </button>
+            <button class="gallery-item" data-src="./assets/images/artist/art2.jpg" data-caption="Art 2 — Stargaze">
+              <img src="./assets/images/artist/art2.jpg" alt="Art 2">
+            </button>
+            <button class="gallery-item" data-src="./assets/images/artist/art3.jpg" data-caption="Art 3 — The Crimson Tree">
+              <img src="./assets/images/artist/art3.jpg" alt="Art 3">
+            </button>
+            <button class="gallery-item" data-src="./assets/images/artist/art4.jpg" data-caption="Art 4 — Conflicted">
+              <img src="./assets/images/artist/art4.jpg" alt="Art 4">
+            </button>
+            <button class="gallery-item" data-src="./assets/images/artist/art5.jpg" data-caption="Art 5 — MAGD Banner">
+              <img src="./assets/images/artist/art5.jpg" alt="Art 5">
+            </button>
+            <button class="gallery-item" data-src="./assets/images/artist/art6.jpg" data-caption="Art 6 — CPE Banner">
+              <img src="./assets/images/artist/art6.jpg" alt="Art 6">
+            </button>
+            <!-- add more as needed -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contact">
+      <div class="container">
+        <p class="muted">&copy; 2025 Ice Olpindo. All rights reserved.</p>
+      </div>
+    </footer>
+  </div> <!-- .site -->
+
+  <!-- Lightbox markup (insert this before the script) -->
+  <div id="lightbox" class="lightbox" aria-hidden="true" tabindex="-1" role="dialog" aria-label="Image viewer">
+    <button class="lightbox-close" aria-label="Close">✕</button>
+    <button class="lightbox-prev" aria-label="Previous">‹</button>
+    <button class="lightbox-next" aria-label="Next">›</button>
+    <img class="lightbox-img" src="" alt="">
+    <div class="lightbox-caption" aria-live="polite"></div>
+  </div>
+
+  <!-- Lightbox + reveal script -->
+  <script>
+  (function () {
+    // Reveal-on-scroll (with fallback)
+    const reveals = Array.from(document.querySelectorAll('.reveal'));
+    if ('IntersectionObserver' in window && reveals.length) {
+      const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      reveals.forEach(el => io.observe(el));
+    } else {
+      reveals.forEach(el => el.classList.add('is-visible'));
+    }
+
+    // Gallery items
+    const items = Array.from(document.querySelectorAll('.gallery-item'));
+    if (!items.length) return;
+
+    // Lightbox elements (may be missing)
+    const lb = document.getElementById('lightbox');
+    if (lb) {
+      const lbImg = lb.querySelector('.lightbox-img');
+      const lbCaption = lb.querySelector('.lightbox-caption');
+      const closeBtn = lb.querySelector('.lightbox-close');
+      const prevBtn = lb.querySelector('.lightbox-prev');
+      const nextBtn = lb.querySelector('.lightbox-next');
+      let idx = -1;
+
+      function open(i){
+        const el = items[i];
+        if(!el) return;
+        idx = i;
+        const src = el.dataset.src || el.querySelector('img')?.src;
+        const caption = el.dataset.caption || '';
+        lbImg.src = src || '';
+        lbImg.alt = el.querySelector('img')?.alt || '';
+        lbCaption.textContent = caption;
+        lb.classList.add('open');
+        lb.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+      }
+      function close(){
+        lb.classList.remove('open');
+        lb.setAttribute('aria-hidden','true');
+        lbImg.src = '';
+        document.body.style.overflow = '';
+        // return focus to the last thumbnail if possible
+        const thumb = items[idx];
+        if (thumb) thumb.focus();
+      }
+      function prev(){ if(idx>0) open(idx-1); }
+      function next(){ if(idx < items.length-1) open(idx+1); }
+
+      items.forEach((it,i)=>{
+        // ensure thumbnails are keyboard-focusable
+        it.setAttribute('aria-pressed','false');
+        it.addEventListener('click', ()=> open(i));
+        it.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); } });
+      });
+
+      closeBtn.addEventListener('click', close);
+      prevBtn.addEventListener('click', prev);
+      nextBtn.addEventListener('click', next);
+      lb.addEventListener('click', (e)=> { if(e.target === lb) close(); });
+
+      document.addEventListener('keydown', (e)=>{
+        if(!lb.classList.contains('open')) return;
+        if(e.key === 'Escape') close();
+        if(e.key === 'ArrowLeft') prev();
+        if(e.key === 'ArrowRight') next();
+      });
+    } else {
+      // Fallback: open image in new tab if lightbox not present
+      items.forEach(it => {
+        it.addEventListener('click', () => {
+          const src = it.dataset.src || it.querySelector('img')?.src;
+          if (src) window.open(src, '_blank');
+        });
+        it.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); const src = it.dataset.src || it.querySelector('img')?.src; if (src) window.open(src, '_blank'); }});
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

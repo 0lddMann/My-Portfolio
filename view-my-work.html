@@ -1,108 +1,111 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>View My Work - Ice Olpindo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>View My Work — Ice Olpindo</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="loaded"> <!-- Add 'loaded' class for fade-in effect -->
+<body class="loaded">
+  <!-- lightweight background overlay to match site vibe -->
   <div class="video-background" aria-hidden="true">
     <div class="video-overlay"></div>
   </div>
 
   <div class="site">
-    <!-- Header -->
     <header class="site-header">
       <div class="container">
         <div class="logo">Ice Olpindo</div>
         <nav>
           <a href="index.html">Home</a>
-          <a href="view-my-work.html">View My Work</a>
-          <a href="#about">About</a>
+          <a href="view-my-work.html" aria-current="page">View My Work</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="tetris.html">Tetris</a>
           <a href="#contact">Contact</a>
         </nav>
       </div>
     </header>
 
-    <!-- Main Content -->
     <main>
       <section class="portfolio reveal" id="work">
         <div class="container">
-          <h2 class="section-title">My Projects</h2>
+          <h2 class="section-title">Selected Projects</h2>
+          <p class="muted">A small selection of projects — click any card to open the project page or play the demo.</p>
+
           <div class="portfolio-grid">
-            <article class="portfolio-item reveal" data-tilt="true">
-              <div class="project-img" style="background-image: url('./assets/images/project1.jpg');"></div>
+            <!-- Project 1 -->
+            <article class="portfolio-item reveal" data-tilt="true" tabindex="0" role="link" aria-label="Open Imaginarium project">
+              <div class="project-img" style="background-image: url('./assets/images/project1.jpg'); background-size:cover; background-position:center;"></div>
               <h3>Imaginarium</h3>
-              <p class="muted">A dream-themed e-commerce clothing website designed to give users a soft, surreal, and immersive shopping experience.</p>
+              <p class="muted">Dream-themed e‑commerce clothing site — soft visuals, immersive UI and smooth interactions.</p>
               <div class="project-tags">
-                <span>HTML</span>
-                <span>CSS</span>
-                <span>JavaScript</span>
+                <span>HTML</span><span>CSS</span><span>JavaScript</span>
               </div>
-              <a href="https://frostbyte-manig.github.io/imaginarium/" class="project-link">View Project →</a>
+              <a class="project-link" href="https://frostbyte-manig.github.io/imaginarium/" target="_blank" rel="noopener">Open Project →</a>
             </article>
 
-            <article class="portfolio-item reveal" data-tilt="true">
-              <div class="project-img" style="background-image: url('./assets/images/project2.jpg');"></div>
-              <h3>Project Two</h3>
-              <p class="muted">Product design and prototyping with accessibility-first development. Mobile-responsive and user-centric design.</p>
+            <!-- Project 2: Tetris -->
+            <article class="portfolio-item reveal" data-tilt="true" tabindex="0" role="link" aria-label="Play Tetris">
+              <div class="project-img" style="background-image: url('./assets/images/tetris.png'); background-size:cover; background-position:center;"></div>
+              <h3>Tetris (HTML / CSS / JS)</h3>
+              <p class="muted">A lightweight Tetris built with vanilla HTML/CSS/JS — keyboard controls, scoring and next-piece preview.</p>
               <div class="project-tags">
-                <span>Design</span>
-                <span>Figma</span>
-                <span>UX/UI</span>
+                <span>HTML</span><span>CSS</span><span>JavaScript</span>
               </div>
-              <a href="#" class="project-link">View Project →</a>
+              <a class="project-link" href="tetris.html" target="_blank" rel="noopener">Play →</a>
             </article>
 
-            <article class="portfolio-item reveal" data-tilt="true">
-              <div class="project-img" style="background-image: url('./assets/images/project3.jpg');"></div>
-              <h3>Project Three</h3>
-              <p class="muted">Full-stack application with real-time data, beautiful micro-interactions, and delightful animations throughout.</p>
+            <!-- Project 3: Gallery -->
+            <article class="portfolio-item reveal" data-tilt="true" tabindex="0" role="link" aria-label="Open Art Gallery">
+              <div class="project-img" style="background-image: url('./assets/images/artist/art5.jpg'); background-size:cover; background-position:center;"></div>
+              <h3>Art Gallery</h3>
+              <p class="muted">Curated gallery of illustrations and art — lightbox previews, captions and keyboard navigation.</p>
               <div class="project-tags">
-                <span>Node.js</span>
-                <span>MongoDB</span>
-                <span>WebSocket</span>
+                <span>Art</span><span>Illustration</span><span>Gallery</span>
               </div>
-              <a href="#" class="project-link">View Project →</a>
+              <a class="project-link" href="gallery.html" target="_blank" rel="noopener">Open Gallery →</a>
             </article>
-
-            <!-- Add more projects as needed -->
           </div>
         </div>
       </section>
     </main>
 
-    <!-- Footer -->
     <footer id="contact">
       <div class="container">
         <h2 class="section-title">Let's Connect</h2>
         <div class="social-links">
-          <a href="https://github.com" target="_blank">GitHub</a>
-          <a href="https://linkedin.com" target="_blank">LinkedIn</a>
-          <a href="https://twitter.com" target="_blank">Twitter</a>
-          <a href="mailto:hello@example.com">Email</a>
+          <a href="https://github.com/0lddMann" target="_blank">GitHub</a>
+          <a href="mailto:ijao9.olpindo@gmail.com">Email</a>
         </div>
-        <p class="muted">&copy; 2025 Ice. All rights reserved.</p>
+        <p class="muted">&copy; 2025 Ice Olpindo. All rights reserved.</p>
       </div>
     </footer>
-  </div>
+  </div> <!-- .site -->
 
-  <!-- Interactions script -->
+  <!-- interactions: reveal + tilt + keyboard support -->
   <script>
   (function () {
-    // reveal-on-scroll
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('is-visible');
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    // mark loaded (fade-in)
+    function markLoaded(){ document.body.classList.add('loaded'); }
+    if (document.readyState === 'complete') markLoaded(); else window.addEventListener('load', markLoaded);
 
-    // card tilt
+    // reveal-on-scroll with fallback
+    const reveals = Array.from(document.querySelectorAll('.reveal'));
+    if ('IntersectionObserver' in window && reveals.length) {
+      const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      reveals.forEach(el => io.observe(el));
+    } else {
+      reveals.forEach(el => el.classList.add('is-visible'));
+    }
+
+    // card tilt + keyboard activation
     document.querySelectorAll('.portfolio-item[data-tilt="true"]').forEach(card => {
       let rect = null;
       function onMove(e) {
@@ -117,6 +120,14 @@
       card.addEventListener('pointermove', onMove);
       card.addEventListener('pointerleave', onLeave);
       card.addEventListener('pointercancel', onLeave);
+
+      // keyboard activation: Enter/Space open primary link
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const link = card.querySelector('.project-link');
+          if (link) { link.click(); e.preventDefault(); }
+        }
+      });
     });
   })();
   </script>
