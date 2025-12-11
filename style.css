@@ -348,6 +348,64 @@ footer {
     .portfolio-item[data-tilt="true"] { will-change: transform; }
 }
 
+/* ---------- Carousel styles ---------- */
+.gallery-carousel { margin: 1.4rem 0 2.8rem; position: relative; z-index: 6; }
+.gallery-carousel .carousel { display:flex; align-items:center; gap:12px; position:relative; }
+.carousel-track-wrap { overflow:hidden; width:100%; border-radius:12px; }
+.carousel-track { display:flex; transition: transform 520ms cubic-bezier(.2,.9,.3,1); will-change:transform; }
+.carousel-slide { min-width:100%; user-select:none; cursor: pointer; display:flex; align-items:center; justify-content:center; }
+.carousel-slide img { width:100%; height:420px; object-fit:cover; display:block; border-radius:12px; box-shadow:0 30px 80px rgba(0,0,0,0.6); transition:transform 360ms ease; }
+.carousel-slide img:hover { transform: scale(1.02); }
+
+/* buttons / dots */
+.carousel-btn { background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); color:#fff; font-size:26px; padding:8px 12px; border-radius:10px; cursor:pointer; backdrop-filter: blur(6px); }
+.carousel-btn:active { transform: translateY(1px); }
+
+/* Carousel dots: keep them below the carousel (no overlap) */
+.carousel-dots {
+  /* switch from absolute overlay to normal flow so it pushes content below */
+  position: static;
+  transform: none;
+  left: auto;
+  bottom: auto;
+
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+
+  /* spacing between carousel and gallery below */
+  margin: 12px 0 18px;
+  z-index: 6;
+}
+
+/* keep visual styles for dots */
+.carousel-dots .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: none;
+  cursor: pointer;
+}
+.carousel-dots .dot.active {
+  background: linear-gradient(90deg,#7b61ff,#2dd4bf);
+  box-shadow: 0 6px 18px rgba(43,60,120,0.25);
+}
+
+/* ensure carousel has room below on smaller screens too */
+.gallery-carousel { margin: 1.4rem 0 2.8rem; }
+
+/* responsive */
+@media (max-width:900px){
+  .carousel-slide img { height:260px; }
+  .carousel-btn { font-size:20px; padding:7px 10px; }
+  .carousel-dots { bottom:-18px; }
+}
+
+/* ensure carousel reveal visible */
+.gallery-carousel.reveal { opacity:0; transform:translateY(12px); transition: opacity .5s ease, transform .5s ease; }
+.gallery-carousel.reveal.is-visible { opacity:1; transform:translateY(0); }
+
 /* Small responsive tweaks */
 @media (max-width: 768px) {
   nav { gap: 1rem; }

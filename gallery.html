@@ -26,6 +26,32 @@
           <h2 class="section-title">Art Gallery</h2>
           <p class="muted">Selected works - click any image to view larger with captions.</p>
 
+          <!-- START: Big Carousel -->
+          <section class="gallery-carousel reveal" aria-roledescription="carousel" aria-label="Featured artwork carousel">
+            <div class="carousel" role="region">
+              <button class="carousel-btn prev" aria-label="Previous">‹</button>
+              <div class="carousel-track-wrap">
+                <ul class="carousel-track">
+                  <li class="carousel-slide">
+                    <img src="./assets/images/artist/art1.jpg" alt="Art 1 — Apple" data-caption="Art 1 — Apple">
+                  </li>
+                  <li class="carousel-slide">
+                    <img src="./assets/images/artist/art2.jpg" alt="Art 2 — Stargaze" data-caption="Art 2 — Stargaze">
+                  </li>
+                  <li class="carousel-slide">
+                    <img src="./assets/images/artist/art3.jpg" alt="Art 3 — The Crimson Tree" data-caption="Art 3 — The Crimson Tree">
+                  </li>
+                  <li class="carousel-slide">
+                    <img src="./assets/images/artist/art4.jpg" alt="Art 4 — Conflicted" data-caption="Art 4 — Conflicted">
+                  </li>
+                </ul>
+              </div>
+              <button class="carousel-btn next" aria-label="Next">›</button>
+              <div class="carousel-dots" aria-hidden="false"></div>
+            </div>
+          </section>
+          <!-- END: Big Carousel -->
+
           <div class="gallery-grid">
             <!-- Add your images into assets/images/artist/ (art1.jpg..art8.jpg) -->
             <button class="gallery-item" data-src="./assets/images/artist/art1.jpg" data-caption="Art 1 — Apple">
@@ -68,10 +94,10 @@
     <div class="lightbox-caption" aria-live="polite"></div>
   </div>
 
-  <!-- Lightbox + reveal script -->
+  <!-- Lightbox + reveal + carousel script -->
   <script>
   (function () {
-    // Reveal-on-scroll (with fallback)
+    // markLoaded & reveal-on-scroll (existing behavior)
     const reveals = Array.from(document.querySelectorAll('.reveal'));
     if ('IntersectionObserver' in window && reveals.length) {
       const io = new IntersectionObserver((entries, obs) => {
@@ -87,11 +113,110 @@
       reveals.forEach(el => el.classList.add('is-visible'));
     }
 
-    // Gallery items
+    /* ---------- Carousel ---------- */
+    const carouselEl = document.querySelector('.gallery-carousel .carousel');
+    if (carouselEl) {
+      const track = carouselEl.querySelector('.carousel-track');
+      const slides = Array.from(track.querySelectorAll('.carousel-slide'));
+      const prevBtn = carouselEl.querySelector('.carousel-btn.prev');
+      const nextBtn = carouselEl.querySelector('.carousel-btn.next');
+      const dotsWrap = carouselEl.querySelector('.carousel-dots');
+      let current = 0;
+      let autoplay = true;
+      let timer = null;
+      const AUTOPLAY_MS = 4200;
+
+      // create dots
+      slides.forEach((_, i) => {
+        const d = document.createElement('button');
+        d.className = 'dot';
+        d.setAttribute('aria-label', 'Go to slide ' + (i+1));
+        d.addEventListener('click', () => goTo(i));
+        dotsWrap.appendChild(d);
+      });
+      const dots = Array.from(dotsWrap.querySelectorAll('.dot'));
+
+      function update() {
+        const w = carouselEl.querySelector('.carousel-track-wrap').offsetWidth;
+        track.style.transform = `translateX(-${current * w}px)`;
+        slides.forEach((s, i) => s.setAttribute('aria-hidden', i !== current));
+        dots.forEach((d, i) => d.classList.toggle('active', i === current));
+      }
+
+      function goTo(i) {
+        current = (i + slides.length) % slides.length;
+        update();
+        resetAutoplay();
+      }
+      function next() { goTo(current + 1); }
+      function prev() { goTo(current - 1); }
+
+      nextBtn.addEventListener('click', next);
+      prevBtn.addEventListener('click', prev);
+
+      // keyboard
+      carouselEl.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') next();
+        if (e.key === 'ArrowLeft') prev();
+      });
+
+      // swipe support
+      let startX = 0, dist = 0, isTouch = false;
+      const wrap = carouselEl.querySelector('.carousel-track-wrap');
+      wrap.addEventListener('pointerdown', (e) => {
+        isTouch = true; startX = e.clientX; wrap.setPointerCapture(e.pointerId);
+      });
+      wrap.addEventListener('pointermove', (e) => {
+        if (!isTouch) return;
+        dist = e.clientX - startX;
+      });
+      wrap.addEventListener('pointerup', () => {
+        if (Math.abs(dist) > 40) { if (dist < 0) next(); else prev(); }
+        isTouch = false; dist = 0;
+      });
+
+      // autoplay
+      function resetAutoplay() {
+        if (!autoplay) return;
+        clearTimeout(timer);
+        timer = setTimeout(next, AUTOPLAY_MS);
+      }
+      // responsive resize
+      window.addEventListener('resize', update);
+
+      // init
+      update();
+      resetAutoplay();
+
+      // clicking a slide opens lightbox (if available)
+      slides.forEach((s, i) => {
+        s.addEventListener('click', () => {
+          const img = s.querySelector('img');
+          const src = img?.dataset.src || img?.src;
+          const caption = img?.dataset?.caption || img?.alt || '';
+          const lb = document.getElementById('lightbox');
+          if (lb) {
+            // reuse lightbox open logic below by simulating click on corresponding gallery-item if exists
+            // fallback: open image directly
+            const lbImg = lb.querySelector('.lightbox-img');
+            const lbCaption = lb.querySelector('.lightbox-caption');
+            lbImg.src = src || '';
+            lbCaption.textContent = caption;
+            lb.classList.add('open');
+            lb.setAttribute('aria-hidden','false');
+            document.body.style.overflow = 'hidden';
+            lb.querySelector('.lightbox-close')?.focus();
+          } else if (src) {
+            window.open(src, '_blank');
+          }
+        });
+      });
+    }
+
+    /* ---------- Lightbox (existing) ---------- */
     const items = Array.from(document.querySelectorAll('.gallery-item'));
     if (!items.length) return;
 
-    // Lightbox elements (may be missing)
     const lb = document.getElementById('lightbox');
     if (lb) {
       const lbImg = lb.querySelector('.lightbox-img');
@@ -120,7 +245,6 @@
         lb.setAttribute('aria-hidden','true');
         lbImg.src = '';
         document.body.style.overflow = '';
-        // return focus to the last thumbnail if possible
         const thumb = items[idx];
         if (thumb) thumb.focus();
       }
@@ -128,7 +252,6 @@
       function next(){ if(idx < items.length-1) open(idx+1); }
 
       items.forEach((it,i)=>{
-        // ensure thumbnails are keyboard-focusable
         it.setAttribute('aria-pressed','false');
         it.addEventListener('click', ()=> open(i));
         it.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); } });
@@ -146,7 +269,6 @@
         if(e.key === 'ArrowRight') next();
       });
     } else {
-      // Fallback: open image in new tab if lightbox not present
       items.forEach(it => {
         it.addEventListener('click', () => {
           const src = it.dataset.src || it.querySelector('img')?.src;
