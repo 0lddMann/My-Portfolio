@@ -188,6 +188,28 @@
       update();
       resetAutoplay();
 
+      // ensure correct sizing if images load after script runs
+      // re-run update once all carousel images have loaded
+      const carouselImgs = slides.map(s => s.querySelector('img')).filter(Boolean);
+      let imgsLoaded = 0;
+      carouselImgs.forEach(img => {
+        if (img.complete) {
+          imgsLoaded++;
+        } else {
+          img.addEventListener('load', () => {
+            imgsLoaded++;
+            if (imgsLoaded === carouselImgs.length) {
+              update();
+              resetAutoplay();
+            }
+          }, { once: true });
+        }
+      });
+      if (imgsLoaded === carouselImgs.length) {
+        update();
+        resetAutoplay();
+      }
+
       // clicking a slide opens lightbox (if available)
       slides.forEach((s, i) => {
         s.addEventListener('click', () => {
