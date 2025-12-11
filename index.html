@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ice — Designer & Developer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Local ink-drop video background -->
+  <div class="video-background" aria-hidden="true">
+    <video class="bg-vid" autoplay muted playsinline preload="auto">
+      <source src="./assets/videos/Ink Drop Transition background.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="video-overlay" aria-hidden="true"></div>
+  </div>
+
+  <div class="site">
+    <!-- Header -->
+    <header class="site-header">
+      <div class="container">
+        <div class="logo">Ice Olpindo</div>
+        <nav>
+          <a href="#home">Home</a>
+          <a href="#work">Work</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main>
+      <!-- Hero with profile image -->
+      <section class="hero reveal" id="home">
+        <div class="container">
+          <div class="hero-content">
+            <img src="./assets/images/profile.jpg" alt="Ice" class="profile-img reveal">
+            <h1>Hi, I'm - <span class="typed"></span></h1>
+            <p class="muted">Designer & Developer crafting beautiful digital experiences with code and creativity.</p>
+            <div class="row">
+              <a href="view-my-work.html" class="cta-btn">View My Work</button>
+              <a class="muted" href="#contact">Get in touch →</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Portfolio Projects -->
+      <section class="portfolio reveal" id="work">
+        <div class="container">
+          <h2 class="section-title">Featured Projects</h2>
+          <div class="portfolio-grid">
+            
+            <article class="portfolio-item reveal" data-tilt="true">
+              <div class="project-img" style="background-image: url('./assets/images/project1.jpg');"></div>
+              <h3>Imaginarium</h3>
+              <p class="muted">Imaginarium is a dream-themed e-commerce clothing website designed to give users a soft, surreal, and immersive shopping experience.</p>
+              <div class="project-tags">
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>JavaScript</span>
+              </div>
+              <a href="https://frostbyte-manig.github.io/imaginarium/" class="project-link">View Project →</a>
+            </article>
+
+            <article class="portfolio-item reveal" data-tilt="true">
+              <div class="project-img" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+              <h3>Project Two</h3>
+              <p class="muted">Product design and prototyping with accessibility-first development. Mobile-responsive and user-centric design.</p>
+              <div class="project-tags">
+                <span>Design</span>
+                <span>Figma</span>
+                <span>UX/UI</span>
+              </div>
+              <a href="#" class="project-link">View Project →</a>
+            </article>
+
+            <article class="portfolio-item reveal" data-tilt="true">
+              <div class="project-img" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+              <h3>Project Three</h3>
+              <p class="muted">Full-stack application with real-time data, beautiful micro-interactions, and delightful animations throughout.</p>
+              <div class="project-tags">
+                <span>Node.js</span>
+                <span>MongoDB</span>
+                <span>WebSocket</span>
+              </div>
+              <a href="#" class="project-link">View Project →</a>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section class="about reveal" id="about">
+        <div class="container">
+          <h2 class="section-title">About Me</h2>
+          <div class="about-content">
+            <p class="muted">I'm a passionate designer that loves bussin and a developer that keeps bussin while focused on creating meaningful digital experiences. With a background in both design and development, I bridge the gap between aesthetics and functionality.</p>
+            <p class="muted">I love working on projects that can sheesh a lot of people while challenge me to think differently and push the boundaries of what's possible on the web.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact">
+      <div class="container">
+        <h2 class="section-title">Let's Connect</h2>
+        <div class="social-links">
+          <a href="https://github.com" target="_blank">GitHub</a>
+          <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+          <a href="https://twitter.com" target="_blank">Twitter</a>
+          <a href="mailto:hello@example.com">Email</a>
+        </div>
+        <p class="muted">&copy; 2025 Ice. All rights reserved. Buss bussss</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Video stop script -->
+  <script>
+  (function () {
+    const vid = document.querySelector('.video-background .bg-vid');
+    const overlay = document.querySelector('.video-background .video-overlay');
+    const stopOffset = 0.1;
+
+    if (!vid) {
+      document.body.classList.add('loaded');
+      return;
+    }
+
+    document.body.classList.add('loaded');
+    vid.loop = false;
+
+    function setupStop() {
+      const dur = vid.duration;
+      if (!isFinite(dur) || dur <= 0) return;
+      const stopTime = Math.max(0, dur - stopOffset);
+      let rafId = null;
+      function check() {
+        if (vid.currentTime >= stopTime - 0.02) {
+          vid.pause();
+          vid.currentTime = stopTime;
+          overlay.classList.add('final');
+          if (rafId) cancelAnimationFrame(rafId);
+          return;
+        }
+        rafId = requestAnimationFrame(check);
+      }
+      rafId = requestAnimationFrame(check);
+    }
+
+    if (vid.readyState >= 1 && isFinite(vid.duration) && vid.duration > 0) {
+      setupStop();
+    } else {
+      vid.addEventListener('loadedmetadata', setupStop, { once: true });
+      setTimeout(setupStop, 5000);
+    }
+  })();
+  </script>
+
+  <!-- Interactions script -->
+  <script>
+  (function () {
+    function markLoaded() { document.body.classList.add('loaded'); }
+    if (document.readyState === 'complete') markLoaded();
+    else window.addEventListener('load', markLoaded);
+
+    // reveal-on-scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // typewriter headline
+    const typedEl = document.querySelector('.hero .typed');
+    if (typedEl) {
+      const words = ['Ice', 'a Designer', 'a Developer', 'a Creator', 'a Gamer'];
+      let wIdx = 0, ch = 0, forward = true;
+      function tick() {
+        const w = words[wIdx % words.length];
+        typedEl.textContent = w.slice(0, ch);
+        if (forward) {
+          ch++;
+          if (ch > w.length) { forward = false; setTimeout(tick, 900); return; }
+        } else {
+          ch--;
+          if (ch < 0) { forward = true; wIdx++; }
+        }
+        setTimeout(tick, forward ? 80 : 40);
+      }
+      tick();
+    }
+
+    // card tilt
+    document.querySelectorAll('.portfolio-item[data-tilt="true"]').forEach(card => {
+      let rect = null;
+      function onMove(e) {
+        rect = rect || card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+        const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+        const rx = (y) * 6;
+        const ry = (x) * -6;
+        card.style.transform = `translateZ(0) translateY(-12px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      }
+      function onLeave() { card.style.transform = ''; rect = null; }
+      card.addEventListener('pointermove', onMove);
+      card.addEventListener('pointerleave', onLeave);
+      card.addEventListener('pointercancel', onLeave);
+    });
+  })();
+  </script>
+</body>
+</html>
